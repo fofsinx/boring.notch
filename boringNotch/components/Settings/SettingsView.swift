@@ -100,6 +100,7 @@ struct GeneralSettings: View {
     @Default(.showEmojis) var showEmojis
     @Default(.gestureSensitivity) var gestureSensitivity
     @Default(.minimumHoverDuration) var minimumHoverDuration
+    @Default(.notchCloseDuration) var notchCloseDuration
     //@State var nonNotchHeightMode: NonNotchHeightMode = .matchRealNotchSize
     @Default(.nonNotchHeight) var nonNotchHeight
     @Default(.nonNotchHeightMode) var nonNotchHeightMode
@@ -247,6 +248,14 @@ struct GeneralSettings: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+            }
+            Slider(value: $notchCloseDuration, in: 0...2, step: 0.2) {
+              HStack {
+                        Text("Notch close delay")
+                        Spacer()
+                        Text("\(Defaults[.notchCloseDuration], specifier: "%.1f")s")
+                            .foregroundStyle(.secondary)
+                    }
             }
         } header: {
             Text("Notch behavior")

@@ -267,19 +267,21 @@ class BoringViewModel: NSObject, ObservableObject {
     }
 
     func close() {
-        withAnimation(.smooth) {
-            self.notchSize = .init(width: Sizes().size.closed.width!, height: Sizes().size.closed.height!)
-            self.notchState = .closed
-            self.notchMetastability = false
-        }
-
-        // Set the current view to shelf if it contains files and the user enables openShelfByDefault
-        // Otherwise, if the user has not enabled openLastShelfByDefault, set the view to home
-        if !TrayDrop.shared.isEmpty && Defaults[.openShelfByDefault] {
-            currentView = .shelf
-        } else if !openLastTabByDefault {
-            currentView = .home
-        }
+        let duration = Defaults[.notchCloseDuration]
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            withAnimation(.smooth) {
+              self.notchSize = .init(width: Sizes().size.closed.width!, height: Sizes().size.closed.height!)
+              self.notchState = .closed
+              self.notchMetastability = false
+          }
+          // Set the current view to shelf if it contains files and the user enables openShelfByDefault
+          // Otherwise, if the user has not enabled openLastShelfByDefault, set the view to home
+            if !TrayDrop.shared.isEmpty && Defaults[.openShelfByDefault] {
+                self.currentView = .shelf
+            } else if !self.openLastTabByDefault {
+                self.currentView = .home
+            }
+          }
     }
 
     func openClipboard() {
